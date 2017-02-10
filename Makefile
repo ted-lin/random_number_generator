@@ -1,5 +1,5 @@
 TARGET   := rgn
-SRCS     := rgn.cpp
+SRCS     := rgn.cpp test.cpp
 CXXFLAGS := -Wall
 all:
 	g++ $(CXXFLAGS) $(SRCS) -o $(TARGET)
