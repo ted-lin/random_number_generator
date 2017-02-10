@@ -19,27 +19,28 @@ private:
 	int _get(int range) {
 		return rand() % range;
 	}
-
 public:
 	RGN() {
 		srand(time(NULL));
 	}
-	RGN(int begin, int end):_begin(begin), _end(end) {
+	RGN(int begin, int end, int verbose = 0):_begin(begin), _end(end) {
 		srand(time(NULL));
-		_init();
+		_init(verbose);
 	}
 	~RGN() {
 		_v.clear();
 	}
-	void _init() {
+	void _init(int verbose = 0) {
 		if (_end < _begin)
 			return;
 		for (int i = _begin; i <= _end; ++i)
 			_v.push_back(i);
-		cout << "init rgn array from " << _begin << " to " << _end << endl;
-		for (int i = 0; i <= _end - _begin; ++i)
-			cout << _v[i] << " ";
-		cout << endl;
+		if (verbose) {
+			cout << "init rgn array from " << _begin << " to " << _end << endl;
+			for (int i = 0; i <= _end - _begin; ++i)
+				cout << _v[i] << " ";
+			cout << endl;
+		}
 	}
 	void reset(int begin, int end) {
 		_begin = begin;
@@ -80,6 +81,22 @@ public:
 	void clear() {
 		_v.clear();
 	}
+
+	static vector<int> getVec(int begin, int end) {
+		vector<int> __v;
+		RGN _rgn(begin, end, 0);
+		srand(time(NULL));
+		if (end < begin)
+			return __v;
+		for (int i = end - begin; i >= 0; --i)
+			__v.push_back(_rgn.get());
+		return __v;
+	}
+	static void dumpVec(vector<int> v) {
+		for(int i = 0; i < v.size(); ++i)
+			cout << v[i] << " ";
+		cout << endl;
+	}
 };
 
 int main () {
@@ -91,5 +108,8 @@ int main () {
 	rgn.clear();
 	rgn.test();
 	rgn.test(10);
+	vector<int> v = RGN::getVec(1, 10);
+	RGN::dumpVec(v);
+	RGN::dumpVec(RGN::getVec(-5, 5));
 	return 0;
 }
